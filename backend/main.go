@@ -8,6 +8,7 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/cors"
+	"github.com/joho/godotenv"
 	"github.com/rajiknows/vedashala/config"
 	"github.com/rajiknows/vedashala/handlers"
 	"github.com/rajiknows/vedashala/utils"
@@ -15,7 +16,10 @@ import (
 
 func main() {
 	config.InitConfig()
-
+	err := godotenv.Load(".env")
+	if err != nil {
+		log.Printf("env not found")
+	}
 	portString := os.Getenv("PORT")
 	if portString == "" {
 		log.Fatal("PORT not found")
@@ -24,14 +28,13 @@ func main() {
 	router := chi.NewRouter()
 
 	router.Use(cors.Handler(cors.Options{
-		AllowedOrigins:   []string{"https://*", "http://*"},
+		AllowedOrigins:   []string{"http://localhost:5173", "http://localhost:*"}, // Allow any port on localhost
 		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
-		AllowedHeaders:   []string{"*"},
-		ExposedHeaders:   []string{"Link"},
-		AllowCredentials: false,
+		AllowedHeaders:   []string{"*"}, // Allow all headers
+		ExposedHeaders:   []string{"Set-Cookie", "Content-Length"},
+		AllowCredentials: true,
 		MaxAge:           300,
 	}))
-
 	routerConfig(router)
 
 	srv := &http.Server{
@@ -40,7 +43,7 @@ func main() {
 	}
 
 	fmt.Println("server starting on port", portString)
-	err := srv.ListenAndServe()
+	err = srv.ListenAndServe()
 	if err != nil {
 		log.Fatal("error in serving: ", err)
 	}
