@@ -42,6 +42,16 @@ This web server project aims to provide a robust and scalable API service with r
 
 - `POST /v1/user/login`: User login endpoint.
 - `POST /v1/user/register`: User registration endpoint.
+    `payload` : 
+    ```
+    {
+        "email": "xyz@abc.com",
+        "password": "jsdjasbdjsa"
+    }
+    ```
+    ```
+    ```
+    ```
 
 ### Student
 
