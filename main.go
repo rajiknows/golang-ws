@@ -9,7 +9,8 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/cors"
 	"github.com/rajiknows/vedashala/config"
-	"github.com/rajiknows/vedashala/services"
+	"github.com/rajiknows/vedashala/handlers"
+	"github.com/rajiknows/vedashala/utils"
 )
 
 func main() {
@@ -46,15 +47,15 @@ func main() {
 }
 
 func handleReadiness(w http.ResponseWriter, r *http.Request) {
-	RespondWithJson(w, 200, struct{}{})
+	utils.RespondWithJson(w, 200, struct{}{})
 }
 
 func routerConfig(router *chi.Mux) {
 	v1router := chi.NewRouter()
 	v1router.Get("/healthz", handleReadiness)
-	v1router.Mount("/user", http.HandlerFunc(services.HandleUser))
-	v1router.Mount("/student", http.HandlerFunc(services.HandleStudent))
-	v1router.Mount("/teacher", http.HandlerFunc(services.HandleTeacher))
-	v1router.Mount("/admin", http.HandlerFunc(services.HandleAdmin))
+	v1router.Mount("/user", http.HandlerFunc(handlers.HandleUser))
+	v1router.Mount("/student", http.HandlerFunc(handlers.HandleStudent))
+	v1router.Mount("/teacher", http.HandlerFunc(handlers.HandleTeacher))
+	v1router.Mount("/admin", http.HandlerFunc(handlers.HandleAdmin))
 	router.Mount("/v1", v1router)
 }

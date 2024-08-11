@@ -1,4 +1,4 @@
-package main
+package utils
 
 import (
 	"encoding/json"
@@ -8,6 +8,7 @@ import (
 
 func RespondWithJson(w http.ResponseWriter, code int, payload interface{}) {
 	data, err := json.Marshal(payload)
+	// data , err := json.NewEncoder(payload)  ---- cant do it here since we dont have a writer
 	if err != nil {
 		log.Printf("json marshal failed \n%v", payload)
 		w.WriteHeader(500)
