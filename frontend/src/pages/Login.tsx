@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
 import axios from "axios";
 import { getUrl } from "../utils/geturl";
 
@@ -16,16 +15,19 @@ const Login: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${url}/v1/user/login`, {
-        email,
-        password,
-      },
-      { 
-        withCredentials: true,
-        headers: {
-          'Content-Type': 'application/json',
-        }
-      });
+      await axios.post(
+        `${url}/v1/user/login`,
+        {
+          email,
+          password,
+        },
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
+      );
       // Adjust according to your API response structure
       // setUser({ id: response.data.id });
       navigate("/");
